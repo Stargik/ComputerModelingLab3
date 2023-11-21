@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graphs</title>
+</head>
+
+<body>
+    <p>Green - Euler Method</p>
+    <p>Red - Runge-Kutta (4) Method</p>
+    <div id="calculator" style="width: 600px; height: 400px;"></div>
+
+    <script src="https://www.desmos.com/api/v1.8/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+    <script>
+        var elt = document.getElementById('calculator');
+        var calculator = Desmos.GraphingCalculator(elt);
+        elt.style.width = '100%';
+        elt.style.height = '600px';
+
+        fetch('EulerMethod.json')
+            .then(response => response.json())
+            .then(data => {
+                calculator.setExpression({
+                    type: 'table',
+                    columns: [
+                        {
+                            latex: 'x',
+                            values: data.map(p => p.x),
+                        },
+                        {
+                            latex: 'y',
+                            values: data.map(p => p.y),
+                            columnMode: Desmos.ColumnModes.POINTS_AND_LINES,
+                            color: Desmos.Colors.GREEN
+                        }
+                    ]
+                });
+            });
+
+            fetch('RungeKutta4.json')
+            .then(response => response.json())
+            .then(data => {
+                calculator.setExpression({
+                    type: 'table',
+                    columns: [
+                        {
+                            latex: 'x',
+                            values: data.map(p => p.x),
+                        },
+                        {
+                            latex: 'y',
+                            values: data.map(p => p.y),
+                            columnMode: Desmos.ColumnModes.POINTS_AND_LINES,
+                            color: Desmos.Colors.RED
+                        }
+                    ]
+                });
+            })
+    </script>
+</body>
+
+</html>
